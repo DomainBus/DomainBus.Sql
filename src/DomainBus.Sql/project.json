@@ -1,14 +1,15 @@
 ﻿{
   "version": "1.0.0-*",
-  "description": "DomainBus.Sql Class Library",
+  "description": "DomainBus RDBMS storages",
   "authors": [ "t" ],
   "tags": [ "" ],
   "projectUrl": "",
   "licenseUrl": "",
 
     "dependencies": {
-        "DomainBus": "4.0.0-pre-1",
-        "SqlFu": "3.0.0-beta0-8"
+        "DomainBus": "4.0.0-pre0-*",
+        "SqlFu": "3.0.0-beta0-10",
+        "Newtonsoft.Json": "8.0.2"
     },
 
   "frameworks": {

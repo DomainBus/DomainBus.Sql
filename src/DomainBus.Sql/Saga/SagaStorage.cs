@@ -2,7 +2,6 @@
 using System.Data.Common;
 using DomainBus.Processing;
 using SqlFu;
-using SqlFu.Builders.CreateTable;
 
 namespace DomainBus.Sql.Saga
 {
@@ -88,33 +87,6 @@ namespace DomainBus.Sql.Saga
                 if (db.IsUniqueViolation(ex)) throw new SagaExistsException();
              
             }
-        }
-    }
-
-    public class SagaRow
-    {
-        public string SagaId { get; set; }
-        public string Data { get; set; }
-        public long Version { get; set; }
-        public bool IsCompleted { get; set; }
-        public DateTime LastChangedOn { get; set; }
-
-        public static string GetId(string correlation, Type type)
-            => (correlation + type.FullName).MurmurHash().ToBase64();
-    }
-
-
-    public class SagaRowCreator : ATypedStorageCreator<SagaRow>
-    {
-        public SagaRowCreator(IDbFactory db) : base(db)
-        {
-        }
-
-        protected override void Configure(IConfigureTable<SagaRow> cfg)
-        {
-            cfg.Column(c => c.SagaId, c => c.HasSize(32).NotNull())
-                .ColumnSize(d => d.Data, "max")
-                .PrimaryKey(pk => pk.OnColumns(d => d.SagaId));
         }
     }
 }

@@ -14,6 +14,8 @@ namespace DomainBus.Sql.Processor
     {
         private readonly IDbFactory _db;
 
+        public const string Table = "dbus_msg_storage";
+        public const string Schema = "";
         public ProcessorStore(IDbFactory db)
         {
             _db = db;

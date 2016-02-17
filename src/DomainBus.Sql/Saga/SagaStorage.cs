@@ -59,8 +59,8 @@ namespace DomainBus.Sql.Saga
         {
             var old = data.AutoTimestamp;
             var result=db.Update<SagaRow>()
-                .Set(d => d.Data, data.Serialize())
-                .Set(d => d.Version, DateTime.UtcNow.Ticks)
+                .Set(d => d.Data, data.Serialize().ToByteArray())
+                .Set(d => d.Version,data.AutoTimestamp)
                 .Set(d => d.LastChangedOn, DateTime.UtcNow)
                 .Set(d => d.IsCompleted, data.IsCompleted)
                 .Where(d => d.SagaId == SagaRow.GetId(correlationId, data.GetType()) && d.Version == old)
@@ -79,7 +79,7 @@ namespace DomainBus.Sql.Saga
                     Data = data.Serialize().ToByteArray(),
                     IsCompleted = false,
                     LastChangedOn = DateTime.UtcNow,
-                    Version = DateTime.UtcNow.Ticks
+                    Version = data.AutoTimestamp
                 });
             }
             catch (DbException ex)

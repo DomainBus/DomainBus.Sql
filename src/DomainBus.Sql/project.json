@@ -7,7 +7,7 @@
   "licenseUrl": "",
 
     "dependencies": {
-        "DomainBus": "4.0.0-pre0-4",
+        "DomainBus": "4.0.0-pre0-5",
         "SqlFu": "3.0.0-beta0-10",
         "Newtonsoft.Json": "8.0.2"
     },

@@ -1,5 +1,6 @@
 using DomainBus.Configuration;
 using DomainBus.Sql.Processor;
+using DomainBus.Sql.ReservedIds;
 using DomainBus.Sql.Saga;
 using SqlFu;
 using SqlFu.Builders;
@@ -36,6 +37,14 @@ namespace DomainBus.Sql
         {
             new SagaRowCreator(_factory).WithTableName(tableName, dbSchema).IfExists(ifExists).Create();
             _host.ConfigureSagas(s => s.WithSagaStorage(new SagaStorage(_factory)));
+            return this;
+        }
+
+        public StoragesConfiguration EnableReserveIdStorage(string tableName = SagaTable,
+            string dbSchema = SagaSchema, TableExistsAction ifExists = TableExistsAction.Ignore)
+        {
+            new ReservedIdRowCreator(_factory).WithTableName(tableName, dbSchema).IfExists(ifExists).Create();
+            _host.WithReserveIdStorage(new ReservedIdStorage(_factory));
             return this;
         }
     }

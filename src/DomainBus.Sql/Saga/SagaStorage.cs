@@ -76,7 +76,7 @@ namespace DomainBus.Sql.Saga
                 db.Insert(new SagaRow()
                 {
                     SagaId = SagaRow.GetId(correlationId, data.GetType()),
-                    Data = data.Serialize(),
+                    Data = data.Serialize().ToByteArray(),
                     IsCompleted = false,
                     LastChangedOn = DateTime.UtcNow,
                     Version = DateTime.UtcNow.Ticks

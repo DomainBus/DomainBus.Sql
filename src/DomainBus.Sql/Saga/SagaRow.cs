@@ -5,7 +5,7 @@ namespace DomainBus.Sql.Saga
     public class SagaRow
     {
         public string SagaId { get; set; }
-        public string Data { get; set; }
+        public byte[] Data { get; set; }
         public long Version { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime LastChangedOn { get; set; }

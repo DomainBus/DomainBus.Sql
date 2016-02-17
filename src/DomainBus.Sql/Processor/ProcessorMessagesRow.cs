@@ -7,6 +7,6 @@ namespace DomainBus.Sql.Processor
         public Guid Id { get; set; }
         public string Processor { get; set; }
         public DateTime ArrivedAt { get; set; }
-        public string Data { get; set; }
+        public byte[] Data { get; set; }
     }
 }

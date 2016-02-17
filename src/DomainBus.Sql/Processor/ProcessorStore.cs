@@ -35,7 +35,7 @@ namespace DomainBus.Sql.Processor
                                 Id=msg.Id,
                                 ArrivedAt = msg.TimeStamp.UtcDateTime,
                                 Processor = queueId,
-                                Data=msg.Serialize()
+                                Data=msg.Serialize().ToByteArray()
                             }, tok);
 
                             t.Commit();
@@ -60,6 +60,7 @@ namespace DomainBus.Sql.Processor
                     return db.QueryAs(q =>
                         q.From<ProcessorMessagesRow>()
                             .Where(d => d.Processor == queueId)
+                            .OrderBy(d=>d.ArrivedAt)
                             .Limit(take)
                             .Select(d => d.Data)
                         ).Select(d => d.Deserialize<IMessage>());

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using DomainBus.Dispatcher.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -77,7 +79,10 @@ namespace DomainBus.Sql
             return (T) rez;
         }
 
-
+        public static T Deserialize<T>(this byte[] data)
+        {
+            return Encoding.Unicode.GetString(data).Deserialize<T>();
+        }
     }
 
 }

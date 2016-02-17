@@ -14,8 +14,11 @@ namespace DomainBus.Sql
         public const string ProcessorTable = "dbus_msg_storage";
         public const string ProcessorSchema = "";
 
-        public const string SagaTable = "dbus_msg_sagas";
+        public const string SagaTable = "dbus_sagas";
         public const string SagaSchema = "";
+
+        public const string ReservedTable = "dbus_reserved_id";
+        public const string ReservedSchema = "";
 
         public StoragesConfiguration(IConfigureHost host, IDbFactory factory)
         {
@@ -40,8 +43,8 @@ namespace DomainBus.Sql
             return this;
         }
 
-        public StoragesConfiguration EnableReserveIdStorage(string tableName = SagaTable,
-            string dbSchema = SagaSchema, TableExistsAction ifExists = TableExistsAction.Ignore)
+        public StoragesConfiguration EnableReserveIdStorage(string tableName = ReservedTable,
+            string dbSchema = ReservedSchema, TableExistsAction ifExists = TableExistsAction.Ignore)
         {
             new ReservedIdRowCreator(_factory).WithTableName(tableName, dbSchema).IfExists(ifExists).Create();
             _host.WithReserveIdStorage(new ReservedIdStorage(_factory));

@@ -17,8 +17,8 @@ namespace DomainBus.Sql.Server
         {
             return _db.HandleTransientErrors(db =>
             {
-                return db.QueryValue(q => q.From<ServerStateItem>().SelectAll())
-                    ?.Data.Deserialize<DispatcherState>();
+                return db.QueryValue(q => q.From<ServerStateItem>().Select(d=>d.Data))
+                    ?.Deserialize<DispatcherState>();
             });
         }
 
@@ -32,12 +32,13 @@ namespace DomainBus.Sql.Server
             },wait:300);
         }
 
-        public static void Init(IDbFactory fac)
+        public static void Init(IDbFactory fac,string dbSchema="")
         {
             using (var db = fac.Create())
             {
                 db.CreateTableFrom<ServerStateItem>(c =>
                 {
+                    c.TableName("dbus_server_state", dbSchema);
                     c.IgnoreIfExists();
                     c.ColumnSize(d => d.Data, "max");
                 });

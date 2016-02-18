@@ -17,7 +17,7 @@ namespace DomainBus.Sql.Communicators
             _db.HandleTransientErrors(db =>
             {
                 items = db.QueryAs(q => q.From<ClientToServerRow>()
-                .Where(d=>d.Type==(int)ClientMessageType.Envelope)
+                .Where(d=>d.Type==ClientMessageType.Envelope)
                 .OrderBy(d => d.Id)
                 .SelectAll());
             }, 15, 150);
@@ -27,7 +27,7 @@ namespace DomainBus.Sql.Communicators
         protected override void MarkAsHandled(EnvelopeFromClient envs)
         {
             _db.HandleTransientErrors(
-                db => db.DeleteFrom<ClientToServerRow>(t => t.DataId==envs.Id.ToString() && t.Type==(int)ClientMessageType.Envelope));
+                db => db.DeleteFrom<ClientToServerRow>(t => t.DataId==envs.Id.ToString() && t.Type==ClientMessageType.Envelope));
         }
 
      

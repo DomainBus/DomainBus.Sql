@@ -1,22 +1,51 @@
-﻿using DomainBus.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DomainBus.Configuration;
 using DomainBus.Dispatcher.Client;
 using DomainBus.Dispatcher.Server;
 using DomainBus.Sql;
+using DomainBus.Sql.Communicators;
+using DomainBus.Transport;
 using FluentAssertions;
 using NSubstitute;
+using Ploeh.AutoFixture;
 using SqlFu.Builders;
 using Xunit;
 
 namespace Tests
 {
-    public class ClientToServerTests
+
+    public class FakeServer:IWantEndpointUpdates,IRouteMessages
+    {
+        
+        public int Routed { get; private set; }
+        public int Configs { get; private set; }
+
+        public Task Route(EnvelopeFromClient envelope)
+        {
+            envelope.MustNotBeNull();
+            Routed++;
+            return Task.WhenAll();
+        }
+
+
+        public void ReceiveConfigurations(IEnumerable<EndpointMessagesConfig> update)
+        {
+            update.MustNotBeEmpty();
+            Configs++;
+        }
+    }
+    public class ClientToServerTests:IDisposable
     {
         private IConfigureDispatcher _disp;
         private ITalkToServer _clientToServer;
         private DispatchServerConfiguration _cfg;
-        private EndpointMessagesConfig[] _configs;
+        
         private IWantEndpointUpdates _serverConfig;
         private IRouteMessages _serverRoute;
+     
 
         public ClientToServerTests()
         {
@@ -27,26 +56,60 @@ namespace Tests
             _cfg = new DispatchServerConfiguration();
             _cfg.ReceiveFromClientsBySql(Setup.GetConnection());
 
-            _configs = new[] { new EndpointMessagesConfig()
-             {
-                 Endpoint = EndpointId.TestValue,
-                 MessageTypes = new [] {typeof(MyEvent).AsMessageName()}
-             }};
+           
 
             _serverConfig = Substitute.For<IWantEndpointUpdates>();
             _serverRoute = Substitute.For<IRouteMessages>();
 
+            _cfg.Storage = Substitute.For<IStoreDispatcherServerState>();
+            _cfg.DeliveryErrorsQueue = Substitute.For<IDeliveryErrorsQueue>();
+
+        
+
             _cfg.EndpointUpdatesNotifier.Subscribe(_serverConfig);
             _cfg.MessageNotifier.Subscribe(_serverRoute);
+
+
         }
 
         [Fact]
-        public void send_receive_endpoint_config()
+        public async Task send_receive_endpoint_config()
         {
-            _clientToServer.SendEndpointsConfiguration(_configs);
-            _cfg.EndpointUpdatesNotifier.Start();
-            _serverConfig.Received(1).ReceiveConfigurations(_configs);
+          var  configs = new[] { new EndpointMessagesConfig()
+             {
+                 Endpoint = EndpointId.TestValue,
+                 MessageTypes = new [] {typeof(MyEvent).AsMessageName()}
+             }};
+            _clientToServer.SendEndpointsConfiguration(configs);
+           _cfg.EndpointUpdatesNotifier.Start();
+          await Task.Delay(100).ConfigureFalse();
+       
+            _serverConfig.ReceivedWithAnyArgs(1).ReceiveConfigurations(configs);
+            _serverConfig.ReceivedCalls().First().GetArguments()[0].ShouldBeEquivalentTo(configs);
         }
 
+        [Fact]
+        public async Task send_receive_client_messages()
+        {
+            var envelope = new EnvelopeFromClient()
+            {
+                From = "local",
+                Id = Guid.NewGuid(),
+                Messages = Setup.Fixture.CreateMany<MyEvent>().ToArray()
+            };
+            await
+                _clientToServer.SendMessages(envelope);
+            _cfg.MessageNotifier.Start();
+          await Task.Delay(100).ConfigureFalse();
+            await _serverRoute.ReceivedWithAnyArgs(1).Route(null);
+            _serverRoute.ReceivedCalls().First().GetArguments()[0].ShouldBeEquivalentTo(envelope);
+          
+        }
+
+        public void Dispose()
+        {
+            (_cfg.EndpointUpdatesNotifier as IDisposable)?.Dispose();
+            (_cfg.MessageNotifier as IDisposable)?.Dispose();
+        }
     }
 }

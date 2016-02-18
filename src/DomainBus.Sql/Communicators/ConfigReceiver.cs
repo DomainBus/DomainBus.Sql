@@ -23,7 +23,7 @@ namespace DomainBus.Sql.Communicators
 
             _db.HandleTransientErrors(db =>
             
-                db.QueryAs(q=>q.From<ClientToServerRow>().Where(d=>d.Type==(int)ClientMessageType.EndpointConfig)
+                db.QueryAs(q=>q.From<ClientToServerRow>().Where(d=>d.Type==ClientMessageType.EndpointConfig)
                 .Select(d=>d.Data)).FilterNulls().Select(d=>d.Deserialize<EndpointMessagesConfig>())
                 .ToArray()
             );
@@ -32,11 +32,10 @@ namespace DomainBus.Sql.Communicators
 
         protected override void MarkAsHandled(IEnumerable<EndpointMessagesConfig> configs)
         {
+            var values = configs.Select(d => d.Endpoint.ToString());
             _db.HandleTransientErrors(
               db => db.DeleteFrom<ClientToServerRow>(t 
-              => t.DataId.HasValueIn(configs.Select(d=>d.Endpoint.ToString()))
-                && t.Type==(int)ClientMessageType.EndpointConfig
-              ));
+              => t.DataId.HasValueIn(values)&&t.Type == ClientMessageType.EndpointConfig));
         }
     }
 }

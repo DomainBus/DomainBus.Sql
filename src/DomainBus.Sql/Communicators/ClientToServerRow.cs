@@ -9,7 +9,7 @@ namespace DomainBus.Sql.Communicators
 
         public int Id { get; set; }
         public string DataId { get; set; }
-        public int Type { get; set; }
+        public ClientMessageType Type { get; set; }
         public byte[] Data { get; set; }
     }
 }

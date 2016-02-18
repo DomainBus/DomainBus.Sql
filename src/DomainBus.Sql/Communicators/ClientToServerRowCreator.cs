@@ -13,6 +13,7 @@ namespace DomainBus.Sql.Communicators
         {
             cfg.Column(d => d.Id, c => c.AutoIncrement())
                 .ColumnSize(d => d.Data, "max")
+                .ColumnDbType(d=>d.Type,"int")
                 .ColumnSize(d=>d.DataId,150)
                 .PrimaryKey(pk=>pk.OnColumns(d=>d.Id))
                 ;

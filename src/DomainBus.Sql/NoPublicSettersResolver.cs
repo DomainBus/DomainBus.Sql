@@ -64,8 +64,16 @@ namespace DomainBus.Sql
 
         public static string Serialize<T>(this T data)
         {
-            var rez = JsonConvert.SerializeObject(data, Settings);
-            return rez;
+            try
+            {
+                var rez = JsonConvert.SerializeObject(data, Settings);
+                return rez;
+            }
+            catch (Exception ex)
+            {
+                var d = 0;
+            }
+            return "";
         }
 
         public static T Deserialize<T>(this string data)

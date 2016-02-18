@@ -27,15 +27,16 @@ namespace DomainBus.Sql.Communicators
                 {
                     foreach (var config in data)
                     {
-                        db.Insert(new ClientToServerRow()
+                        var row = new ClientToServerRow()
                         {
-                            Type = ClientMessageType.EndpointConfig,
+                            Type = (int)ClientMessageType.EndpointConfig,
                             DataId = config.Endpoint,
-                            Data=config.Serialize().ToByteArray()
-                        });
+                            Data = config.Serialize().ToByteArray()
+                        };
+                        db.Insert(row);
                     }
                     t.Commit();
-                }                
+                }
             });
         }
 
@@ -49,7 +50,7 @@ namespace DomainBus.Sql.Communicators
                     db.InsertAsync(new ClientToServerRow()
                     {
                         DataId = envelope.Id.ToString(),
-                        Type = ClientMessageType.Envelope,
+                        Type = (int)ClientMessageType.Envelope,
                         Data = envelope.Serialize().ToByteArray()
                     }, tok)
                     , wait: 200);

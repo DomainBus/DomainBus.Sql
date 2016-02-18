@@ -15,6 +15,7 @@ namespace DomainBus.Sql.Communicators
         public ConfigReceiver(IDbFactory db)
         {
             _db = db;
+            PollingInterval=TimeSpan.FromMinutes(5);
         }
 
         protected override EndpointMessagesConfig[] GetConfigs()
@@ -22,7 +23,7 @@ namespace DomainBus.Sql.Communicators
 
             _db.HandleTransientErrors(db =>
             
-                db.QueryAs(q=>q.From<ClientToServerRow>().Where(d=>d.Type==ClientMessageType.EndpointConfig)
+                db.QueryAs(q=>q.From<ClientToServerRow>().Where(d=>d.Type==(int)ClientMessageType.EndpointConfig)
                 .Select(d=>d.Data)).FilterNulls().Select(d=>d.Deserialize<EndpointMessagesConfig>())
                 .ToArray()
             );
@@ -34,7 +35,7 @@ namespace DomainBus.Sql.Communicators
             _db.HandleTransientErrors(
               db => db.DeleteFrom<ClientToServerRow>(t 
               => t.DataId.HasValueIn(configs.Select(d=>d.Endpoint.ToString()))
-                && t.Type==ClientMessageType.EndpointConfig
+                && t.Type==(int)ClientMessageType.EndpointConfig
               ));
         }
     }

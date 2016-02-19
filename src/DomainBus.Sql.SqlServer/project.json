@@ -7,7 +7,7 @@
   "licenseUrl": "",
     "dependencies": {
         "DomainBus.Sql": "",
-        "SqlFu": "3.0.0-beta0-9"
+        "SqlFu": "3.0.0-beta0-11"
         
     },
 

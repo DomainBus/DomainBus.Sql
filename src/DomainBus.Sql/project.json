@@ -1,6 +1,6 @@
 ﻿{
   "version": "1.0.0-*",
-  "description": "DomainBus RDBMS storages",
+  "description": "DomainBus RDBMS storages core.",
   "authors": [ "t" ],
   "tags": [ "" ],
   "projectUrl": "",

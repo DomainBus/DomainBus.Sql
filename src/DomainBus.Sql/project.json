@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.0-*",
+  "version": "1.0.0-beta0-1",
   "description": "DomainBus RDBMS storages core.",
   "authors": [ "t" ],
   "tags": [ "" ],
@@ -7,8 +7,8 @@
   "licenseUrl": "",
 
     "dependencies": {
-        "DomainBus": "4.0.0-pre0-9",
-        "SqlFu": "3.0.0-beta0-11",
+        "DomainBus": "4.0.0-beta0-1",
+        "SqlFu": "3.0.0-beta-1",
         "Newtonsoft.Json": "8.0.2"
     },
 

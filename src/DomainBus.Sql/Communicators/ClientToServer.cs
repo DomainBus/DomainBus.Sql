@@ -52,8 +52,7 @@ namespace DomainBus.Sql.Communicators
                         DataId = envelope.Id.ToString(),
                         Type = ClientMessageType.Envelope,
                         Data = envelope.Serialize().ToByteArray()
-                    }, tok)
-                    , wait: 200);
+                    }, tok), wait: 200).ConfigureFalse();
             }
             catch (DbException ex)
             {

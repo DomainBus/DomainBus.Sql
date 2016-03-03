@@ -31,14 +31,14 @@ namespace DomainBus.Sql.Processor
                     {
                         try
                         {
-                            await db.InsertAsync(new IdemRow() {MessageId = msg.Id + queueId},tok);
+                            await db.InsertAsync(new IdemRow() {MessageId = msg.Id + queueId},tok).ConfigureFalse();
                             await db.InsertAsync(new ProcessorMessagesRow()
                             {
                                 Id=msg.Id,
                                 ArrivedAt = msg.TimeStamp.UtcDateTime,
                                 Processor = queueId,
                                 Data=msg.Serialize().ToByteArray()
-                            }, tok);
+                            }, tok).ConfigureFalse();
 
                             t.Commit();
                         }

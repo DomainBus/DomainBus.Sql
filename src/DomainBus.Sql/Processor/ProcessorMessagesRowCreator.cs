@@ -1,5 +1,6 @@
 using SqlFu;
 using SqlFu.Builders.CreateTable;
+using SqlFu.Providers.SqlServer;
 
 namespace DomainBus.Sql.Processor
 {
@@ -13,8 +14,7 @@ namespace DomainBus.Sql.Processor
         {
             cfg.ColumnSize(d => d.Processor, 75)
                 .PrimaryKey(pk=>pk.OnColumns(d=>d.Processor,d=>d.Id));
-
-            cfg.ColumnSize(d => d.Data, "max");
+            if (_db.Provider.IsSqlserver()) cfg.ColumnSize(d => d.Data, "max");
 
         }
     }

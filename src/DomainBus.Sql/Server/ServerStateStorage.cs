@@ -1,6 +1,7 @@
 ﻿using DomainBus.Dispatcher.Server;
 using SqlFu;
 using SqlFu.Builders.CreateTable;
+using SqlFu.Providers.SqlServer;
 
 namespace DomainBus.Sql.Server
 {
@@ -40,7 +41,7 @@ namespace DomainBus.Sql.Server
                 {
                     c.TableName("dbus_server_state", dbSchema);
                     c.IgnoreIfExists();
-                    c.ColumnSize(d => d.Data, "max");
+                    if (db.Provider().IsSqlserver())c.ColumnSize(d => d.Data, "max");
                 });
                 db.Insert(new ServerStateItem() {Data = new DispatcherState().Serialize()});
             }

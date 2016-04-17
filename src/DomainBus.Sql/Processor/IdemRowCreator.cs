@@ -11,8 +11,12 @@ namespace DomainBus.Sql.Processor
 
         protected override void Configure(IConfigureTable<IdemRow> cfg)
         {
-            cfg.ColumnSize(d => d.MessageId, 150)
-                .PrimaryKey(pk => pk.OnColumns(d => d.MessageId));
+           
+                cfg.ColumnSize(d => d.MessageId, 150);
+                cfg.PrimaryKey(pk => pk.OnColumns(d => d.MessageId));
+           
+            
+                
         }
     }
 }

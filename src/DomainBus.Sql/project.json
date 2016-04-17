@@ -8,7 +8,7 @@
 
     "dependencies": {
         "DomainBus": "4.0.0-beta0-1",
-        "SqlFu": "3.0.0-beta-1",
+        "SqlFu": "3.0.0-beta-16",
         "Newtonsoft.Json": "8.0.2"
     },
 

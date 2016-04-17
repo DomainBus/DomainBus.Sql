@@ -1,0 +1,26 @@
+﻿{
+    "version": "1.0.0-*",
+    "description": "DomainBus.Sql.Sqlite Class Library",
+    "authors": [ "t" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+    "dependencies": {
+        "DomainBus.Sql": "1.0.0-*",
+        "SqlFu": "3.0.0-beta-7",
+       "System.Data.SQLite": "1.0.100"
+
+    },
+    "frameworks": {
+        "net46": { },
+        "dotnet5.4": {
+            "dependencies": {
+                "Microsoft.CSharp": "4.0.1-beta-23516",
+                "System.Collections": "4.0.11-beta-23516",
+                "System.Linq": "4.0.1-beta-23516",
+                "System.Runtime": "4.0.21-beta-23516",
+                "System.Threading": "4.0.11-beta-23516"
+            }
+        }
+    }
+}

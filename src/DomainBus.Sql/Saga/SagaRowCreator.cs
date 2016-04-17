@@ -1,5 +1,6 @@
 using SqlFu;
 using SqlFu.Builders.CreateTable;
+using SqlFu.Providers.SqlServer;
 
 namespace DomainBus.Sql.Saga
 {
@@ -12,8 +13,8 @@ namespace DomainBus.Sql.Saga
         protected override void Configure(IConfigureTable<SagaRow> cfg)
         {
             cfg.Column(c => c.SagaId, c => c.HasSize(32).NotNull())
-                .ColumnSize(d => d.Data, "max")
                 .PrimaryKey(pk => pk.OnColumns(d => d.SagaId));
+            if (_db.Provider.IsSqlserver()) cfg.ColumnSize(d => d.Data, "max");
         }
     }
 }

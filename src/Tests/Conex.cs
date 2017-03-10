@@ -2,8 +2,7 @@
 using System.Data.SqlClient;
 using CavemanTools.Logging;
 using DomainBus.Configuration;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoNSubstitute;
+
 using SqlFu;
 using SqlFu.Providers.SqlServer;
 
@@ -23,7 +22,7 @@ namespace Tests
         }
 
         public static IDbFactory GetConnection() => SqlFuManager.GetDbFactory();
-        public static IFixture Fixture = new Fixture().Customize(new AutoNSubstituteCustomization());
+        
 
 
     }

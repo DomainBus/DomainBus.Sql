@@ -13,6 +13,7 @@ namespace DomainBus.Sql.Processor
         {
            
                 cfg.ColumnSize(d => d.MessageId, 150);
+                
                 cfg.PrimaryKey(pk => pk.OnColumns(d => d.MessageId));
            
             

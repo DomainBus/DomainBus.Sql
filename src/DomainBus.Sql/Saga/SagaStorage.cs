@@ -18,11 +18,11 @@ namespace DomainBus.Sql.Saga
         {
             try
             {
-                return _db.HandleTransientErrors(db =>
+                return _db.RetryOnTransientError(db =>
                 {
-                    var data = db.QueryValue(q => q.From<SagaRow>()
+                    var data = db.WithSql(q => q.From<SagaRow>()
                         .Where(d => d.SagaId == SagaRow.GetId(correlationId, sagaStateType))
-                        .Select(d => d.Data));
+                        .Select(d => d.Data)).GetValue();
                     return data?.Deserialize<ISagaState>();
                 });
             }
@@ -40,10 +40,10 @@ namespace DomainBus.Sql.Saga
         {
             try
             {
-                _db.HandleTransientErrors(db =>
+                _db.RetryOnTransientError(db =>
                 {
-                    if (isNew) Insert(db, data, correlationId);
-                    else Update(db, data, correlationId);
+                    if (isNew) Insert(db.Connection, data, correlationId);
+                    else Update(db.Connection, data, correlationId);
 
 
                 });

@@ -2,7 +2,7 @@
 using DomainBus.Dispatcher.Client;
 using DomainBus.Sql.Server;
 using FluentAssertions;
-using Ploeh.AutoFixture;
+
 using Xunit;
 
 namespace Tests
@@ -22,7 +22,7 @@ namespace Tests
         {
             var state=_sut.Load();
             state.Should().NotBeNull();
-            var configs = Setup.Fixture.CreateMany<EndpointMessagesConfig>();
+            var configs = new[] { new EndpointMessagesConfig() { Endpoint = DomainBus.Configuration.EndpointId.TestValue } };
             state.Update(configs);
             _sut.Save(state);
 

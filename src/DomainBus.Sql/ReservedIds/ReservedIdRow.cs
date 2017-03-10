@@ -7,6 +7,6 @@ namespace DomainBus.Sql.ReservedIds
         public string Id { get; set; }
         public string Data { get; set; }
 
-        public static string GetId(ReservedIdsSource src) => src.MessageId + src.HandlerType.FullName;
+        public static string GetId(ReservedIdsSource src) => src.MessageId + (src.HandlerType != null ? src.HandlerType.FullName : "");
     }
 }

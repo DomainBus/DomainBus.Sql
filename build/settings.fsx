@@ -5,11 +5,9 @@ let projName="DomainBus.Sql"
 let projDir= "..\src" @@ projName
 let testDir="..\src" @@ "Tests"
 
-let testOnCore=false
-let additionalPack=[".SqlServer"]
+let additionalPack=[|".SqlServer";".Sqlite"|]
 
-let localNugetRepo="E:/Libs/nuget"
-let nugetExeDir="tools"
+
 
 
 

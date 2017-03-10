@@ -6,7 +6,7 @@ using DomainBus.Processing;
 using DomainBus.Sql;
 using FluentAssertions;
 using NSubstitute;
-using Ploeh.AutoFixture;
+
 using SqlFu.Builders;
 using Xunit;
 
@@ -38,7 +38,7 @@ namespace Tests
         [Fact]
         public void add_get()
         {
-            var ids = Setup.Fixture.CreateMany<Guid>().ToArray();
+            var ids = new[] {Guid.NewGuid(), Guid.NewGuid()};
             _sut.Add(_src,ids);
             _sut.Get(_src).ShouldAllBeEquivalentTo(ids);
         }
@@ -46,7 +46,7 @@ namespace Tests
         [Fact]
         public void not_existing_returns_empty()
         {
-            _sut.Get(Setup.Fixture.Create<ReservedIdsSource>()).Should().BeEmpty();
+            _sut.Get(new ReservedIdsSource() { }).Should().BeEmpty();
         }
     }
 

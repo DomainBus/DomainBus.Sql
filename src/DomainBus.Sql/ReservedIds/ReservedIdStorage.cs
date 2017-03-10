@@ -15,31 +15,29 @@ namespace DomainBus.Sql.ReservedIds
             _db = db;
         }
 
-        public Guid[] Get(ReservedIdsSource input)
-        {
-            return _db.HandleTransientErrors(db =>
-            {
-                var data=db.QueryValue(q => q.From<ReservedIdRow>()
-                .Where(d=>d.Id==ReservedIdRow.GetId(input))
-                .Select(d=>d.Data)
-                );
-                return data?.Split(',').Select(Guid.Parse).ToArray()??Array.Empty<Guid>();
-            });
-        }
+        public Guid[] Get(ReservedIdsSource input) 
+            => _db.RetryOnTransientError(
+                db => db.WithSql(
+                    q => q.From<ReservedIdRow>()
+                        .Where(d => d.Id == ReservedIdRow.GetId(input))
+                        .Select(d => d.Data)
+                ).GetValue()
+                ?.Split(',').Select(Guid.Parse).ToArray() 
+                ?? Array.Empty<Guid>());
 
         public void Add(ReservedIdsSource id, Guid[] ids)
         {
-            _db.HandleTransientErrors(db =>
+            _db.RetryOnTransientError(db =>
             {
                 try
                 {
-                    db.Insert(new ReservedIdRow()
+                    db.Connection.Insert(new ReservedIdRow()
                     {
                         Id = ReservedIdRow.GetId(id),
                         Data = ids.Select(d => d.ToString()).StringJoin()
                     });
                 }
-                catch (DbException ex) when (db.IsUniqueViolation(ex))
+                catch (DbException ex) when (db.Connection.IsUniqueViolation(ex))
                 {
                     //ignore duplicates
                 }

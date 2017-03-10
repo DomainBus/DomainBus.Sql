@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Data.Common;
+#if NET461
 using System.Data.SQLite;
+#endif
+#if NETCORE
+using Microsoft.Data.Sqlite;
+#endif
 using DomainBus.Configuration;
 using DomainBus.Dispatcher.Server;
 using SqlFu;
@@ -13,9 +19,17 @@ namespace DomainBus.Sql.Sqlite
     {
 
         static IDbFactory GetFactory(string cnxString)
-        {
+        {      
             cnxString.MustNotBeEmpty("We need a valid connection string");
-            var provider = new SqliteProvider(SQLiteFactory.Instance.CreateConnection);
+
+
+#if NET461
+            Func<DbConnection> cnx = SQLiteFactory.Instance.CreateConnection;
+#endif
+#if NETCORE
+            Func<DbConnection> cnx = SqliteFactory.Instance.CreateConnection;
+#endif
+            var provider = new SqliteProvider(cnx);
             return new DbFactory(new DbAccessProfile()
             {
                 ConnectionString = cnxString,
@@ -30,22 +44,22 @@ namespace DomainBus.Sql.Sqlite
         /// <param name="cnxString"></param>
         /// <param name="cfg"></param>
         /// <returns></returns>
-        public static IConfigureHost WithSqlServerStorages(this IConfigureHost host,string cnxString,Action<StoragesConfiguration> cfg)
+        public static IConfigureHost WithSqliteStorages(this IConfigureHost host,string cnxString,Action<StoragesConfiguration> cfg)
         {
             return host.WithSqlStorages(GetFactory(cnxString), cfg);
         }
 
-        public static void WithSqlServerStorage(this DispatchServerConfiguration cfg, string cnxString,string dbSchema="")
+        public static void WithSqliteStorage(this DispatchServerConfiguration cfg, string cnxString,string dbSchema="")
         {
             cfg.WithSqlStorage(GetFactory(cnxString), dbSchema);
         }
 
-        public static void ReceiveFromClientsBySqlServer(this DispatchServerConfiguration cfg, string cnxString, string table = Sql.Extensions.CommunicatorTable, string dbSchema = Sql.Extensions.CommunicatorSchema)
+        public static void ReceiveFromClientsBySqlite(this DispatchServerConfiguration cfg, string cnxString, string table = Sql.Extensions.CommunicatorTable, string dbSchema = Sql.Extensions.CommunicatorSchema)
         {
             cfg.ReceiveFromClientsBySql(GetFactory(cnxString),table,dbSchema);
         }
 
-        public static IConfigureDispatcher CommunicateBySqlServerStorage(this IConfigureDispatcher cfg, string cnxString, string table = Sql.Extensions.CommunicatorTable, string dbSchema = Sql.Extensions.CommunicatorSchema, TableExistsAction ifExists = TableExistsAction.Ignore)
+        public static IConfigureDispatcher CommunicateBySqliteStorage(this IConfigureDispatcher cfg, string cnxString, string table = Sql.Extensions.CommunicatorTable, string dbSchema = Sql.Extensions.CommunicatorSchema, TableExistsAction ifExists = TableExistsAction.Ignore)
         {
             return cfg.CommunicateBySqlStorage(GetFactory(cnxString), table, dbSchema, ifExists);
         }

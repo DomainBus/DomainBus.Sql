@@ -14,23 +14,21 @@ namespace DomainBus.Sql.Server
             _db = db;
         }
 
-        public DispatcherState Load()
-        {
-            return _db.HandleTransientErrors(db =>
-            {
-                return db.QueryValue(q => q.From<ServerStateItem>().Select(d=>d.Data))
-                    ?.Deserialize<DispatcherState>();
-            });
-        }
+        public DispatcherState Load() => 
+            _db.RetryOnTransientError(
+                db => db.WithSql(
+                    q => q.From<ServerStateItem>().Select(d=>d.Data))
+                .GetValue()
+                ?.Deserialize<DispatcherState>());
 
         public void Save(DispatcherState state)
         {
-            _db.HandleTransientErrors(db =>
+            _db.RetryOnTransientError(db =>
             {
-                db.Update<ServerStateItem>()
+                db.Connection.Update<ServerStateItem>()
                     .Set(d => d.Data, state.Serialize())
                     .Execute();
-            },wait:300);
+            });
         }
 
         public static void Init(IDbFactory fac,string dbSchema="")

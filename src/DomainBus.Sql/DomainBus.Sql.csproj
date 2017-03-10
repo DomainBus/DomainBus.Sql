@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>DomainBus RDBMS storages core.</Description>
+    <Authors>Mihai Mogosanu</Authors>
+    <TargetFrameworks>netstandard1.4;net461</TargetFrameworks>
+    <AssemblyName>DomainBus.Sql</AssemblyName>
+    <PackageId>DomainBus.Sql</PackageId>
+    <PackageTags>domainbus;sql</PackageTags>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>          
+    <Version>1.0.0-beta2</Version>
+      <DocumentationFile>bin\Release\$(TargetFramework)\DomainBus.Sql.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.4|AnyCPU'">
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SqlFu" Version="3.3.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="DomainBus" Version="4.0.0-beta2" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+     
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

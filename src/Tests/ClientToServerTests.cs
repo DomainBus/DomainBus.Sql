@@ -10,7 +10,7 @@ using DomainBus.Sql.Communicators;
 using DomainBus.Transport;
 using FluentAssertions;
 using NSubstitute;
-using Ploeh.AutoFixture;
+
 using SqlFu.Builders;
 using Xunit;
 
@@ -95,7 +95,7 @@ namespace Tests
             {
                 From = "local",
                 Id = Guid.NewGuid(),
-                Messages = Setup.Fixture.CreateMany<MyEvent>().ToArray()
+                Messages = new[] {new MyEvent() }
             };
             await
                 _clientToServer.SendMessages(envelope);

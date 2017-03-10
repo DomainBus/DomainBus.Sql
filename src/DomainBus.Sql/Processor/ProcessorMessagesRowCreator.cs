@@ -13,7 +13,9 @@ namespace DomainBus.Sql.Processor
         protected override void Configure(IConfigureTable<ProcessorMessagesRow> cfg)
         {
             cfg.ColumnSize(d => d.Processor, 75)
-                .PrimaryKey(pk=>pk.OnColumns(d=>d.Processor,d=>d.Id));
+                .PrimaryKey(pk=>pk.OnColumns(d=>d.Processor,d=>d.Id))
+                .Column(d=>d.ArrivalId,c=>c.AutoIncrement())
+                ;
             if (_db.Provider.IsSqlserver()) cfg.ColumnSize(d => d.Data, "max");
 
         }

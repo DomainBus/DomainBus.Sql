@@ -5,7 +5,6 @@ using DomainBus.Sql.Communicators;
 using DomainBus.Sql.Server;
 using SqlFu;
 using SqlFu.Builders;
-using SqlFu.Configuration;
 
 namespace DomainBus.Sql
 {

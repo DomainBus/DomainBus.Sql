@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using DomainBus.Dispatcher.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -82,7 +81,7 @@ namespace DomainBus.Sql
             var rez = JsonConvert.DeserializeObject(data, typeof (T), Settings);
             if (tp.IsArray)
             {
-                return rez.As<JArray>().ToObject<T>();
+                return rez.CastAs<JArray>().ToObject<T>();
             }
             return (T) rez;
         }

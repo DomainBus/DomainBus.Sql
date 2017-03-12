@@ -5,6 +5,7 @@ let projName="DomainBus.Sql"
 let projDir= "..\src" @@ projName
 let testDir="..\src" @@ "Tests\Tests.csproj"
 
+
 let additionalPack=[|".SqlServer";".Sqlite"|]
 
 

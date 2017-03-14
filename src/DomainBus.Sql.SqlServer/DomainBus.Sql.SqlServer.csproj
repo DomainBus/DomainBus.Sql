@@ -6,6 +6,7 @@
     <Authors>Mihai Mogosanu</Authors>
     <TargetFrameworks>netstandard1.4;net461</TargetFrameworks>
     <AssemblyName>DomainBus.Sql.SqlServer</AssemblyName>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>DomainBus.Sql.SqlServer</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>

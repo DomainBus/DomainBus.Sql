@@ -6,6 +6,7 @@
     <TargetFrameworks>netstandard1.4;net461</TargetFrameworks>
     <AssemblyName>DomainBus.Sql</AssemblyName>
     <PackageId>DomainBus.Sql</PackageId>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>domainbus;sql</PackageTags>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>

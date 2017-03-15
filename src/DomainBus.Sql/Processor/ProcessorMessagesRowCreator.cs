@@ -18,13 +18,14 @@ namespace DomainBus.Sql.Processor
                 .PrimaryKey(pk=>pk.OnColumns(d=>d.Processor,d=>d.Id));
             if (this._db.Provider.IsSqlite())
             {
-                cfg.Column(d => d.ArrivalId, c => c.HasDbType("timestamp").HasDefaultValue("CURRENT_TIMESTAMP"))
+                cfg
+                    //.Column(d => d.ArrivalId, c => c.HasDbType("timestamp").HasDefaultValue("CURRENT_TIMESTAMP"))
                     .ColumnDbType(d => d.Id, SqliteType.Text)
                     ;
             }
             if (this._db.Provider.IsSqlserver())
             {
-                cfg.Column(d => d.ArrivalId, c => c.HasDbType(SqlServerType.DateTime).HasDefaultValue("getdate()",true));
+                cfg.Column(d => d.ArrivalId, c => c.HasDbType(SqlServerType.BigInt));
                 cfg.ColumnSize(d => d.Data, "max");
             }                                
         }

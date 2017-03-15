@@ -39,7 +39,7 @@ namespace DomainBus.Sql.Processor
                             await db.Connection.InsertAsync(new ProcessorMessagesRow()
                             {
                                 Id = msg.Id,
-                               
+                                ArrivalId = msg.TimeStamp.Ticks,
                                 Processor = queueId,
                                 Data = msg.Serialize().ToByteArray()
                             }, db.Cancel).ConfigureFalse();

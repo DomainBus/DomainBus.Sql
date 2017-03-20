@@ -15,7 +15,7 @@ namespace DomainBus.Sql.Communicators
         public ConfigReceiver(IDbFactory db)
         {
             _db = db;
-            PollingInterval=TimeSpan.FromMinutes(5);
+            Timer.Interval=TimeSpan.FromMinutes(5);
         }
 
         protected override EndpointMessagesConfig[] GetConfigs()

@@ -14,15 +14,15 @@ namespace DomainBus.Sql.Processor
         protected override void Configure(IConfigureTable<ProcessorMessagesRow> cfg)
         {
             cfg.ColumnSize(d => d.Processor, 75)
-                
-                .PrimaryKey(pk=>pk.OnColumns(d=>d.Processor,d=>d.Id));
+                .PrimaryKey(pk=>pk.OnColumns(d=>d.ArrivalId))
+                .Column(d=>d.ArrivalId,c=>c.AutoIncrement())
+                .Index(pk=>pk.OnColumns(d=>d.MessageId,d=>d.Processor).Unique());
             if (this._db.Provider.IsSqlite())
             {
-                cfg .ColumnDbType(d => d.Id, SqliteType.Text);
+                cfg .ColumnDbType(d => d.MessageId, SqliteType.Text);
             }
             if (this._db.Provider.IsSqlserver())
             {
-                cfg.Column(d => d.ArrivalId, c => c.HasDbType(SqlServerType.BigInt));
                 cfg.ColumnSize(d => d.Data, "max");
             }                                
         }

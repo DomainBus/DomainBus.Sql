@@ -38,11 +38,10 @@ namespace DomainBus.Sql.Processor
                                     .ConfigureFalse();
                             await db.Connection.InsertAsync(new ProcessorMessagesRow()
                             {
-                                Id = msg.Id,
-                                ArrivalId = msg.TimeStamp.Ticks,
+                                MessageId = msg.Id,
                                 Processor = queueId,
                                 Data = msg.Serialize().ToByteArray()
-                            }, db.Cancel).ConfigureFalse();
+                            }, db.Cancel,c=>c.Ignore(d=>d.ArrivalId)).ConfigureFalse();
 
                             t.Commit();
                         }
@@ -87,7 +86,7 @@ namespace DomainBus.Sql.Processor
             try
             {
                 _db.RetryOnTransientError(
-                    db => db.Connection.DeleteFrom<ProcessorMessagesRow>(d => d.Processor == queue && d.Id == id));
+                    db => db.Connection.DeleteFrom<ProcessorMessagesRow>(d => d.Processor == queue && d.MessageId == id));
             }
             catch (DbException ex)
             {

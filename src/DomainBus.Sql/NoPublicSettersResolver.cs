@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
@@ -54,8 +55,9 @@ namespace DomainBus.Sql
                         ContractResolver = new NonPublicSettersResolver(),
                         PreserveReferencesHandling =
                             PreserveReferencesHandling.Objects,
-                        DateTimeZoneHandling = DateTimeZoneHandling.Utc
+                        DateTimeZoneHandling = DateTimeZoneHandling.Utc                        
                     };
+                    _settings.Converters.Add(new StringEnumConverter());
                 }
                 return _settings;
             }

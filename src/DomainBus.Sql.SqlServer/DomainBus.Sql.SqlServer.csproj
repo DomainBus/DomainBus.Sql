@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SqlFu" Version="3.3.5" />
+    <PackageReference Include="SqlFu" Version="3.3.8" />
     <PackageReference Include="System.Data.SqlClient" Version="4.3.0" />
   </ItemGroup>
 

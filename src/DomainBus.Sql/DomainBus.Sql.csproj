@@ -14,7 +14,7 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>          
-    <Version>1.0.0-beta4-2</Version>
+    <Version>1.0.0-beta4-4</Version>
       <DocumentationFile>bin\Release\$(TargetFramework)\DomainBus.Sql.xml</DocumentationFile>
   </PropertyGroup>
 
@@ -23,9 +23,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SqlFu" Version="3.3.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="DomainBus" Version="4.0.0-beta7-2" />
+    <PackageReference Include="SqlFu" Version="3.3.8" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
